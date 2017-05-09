@@ -117,7 +117,9 @@ def jeminas_new_number():
 
 
 def cancel_application():
-    pass
+    cur.execute("""DELETE FROM applicants WHERE email LIKE '%mauriseu.net';""")
+    cur.execute("""SELECT first_name, last_name, email FROM applicants;""")
+    print_table(table=cur.fetchall())
 
 
 def main():
