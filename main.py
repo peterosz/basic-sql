@@ -47,7 +47,7 @@ def handle_menu():
     elif option == "3":
         carols_hat()
     elif option == "4":
-        correct_carol()
+        not_carol()
     elif option == "5":
         new_applicant()
     elif option == "6":
@@ -84,8 +84,11 @@ def carols_hat():
     del_full_name_column()
 
 
-def correct_carol():
-    pass
+def not_carol():
+    add_full_name_column()
+    cur.execute("""SELECT full_name, phone_number FROM applicants where email LIKE '%@adipiscingenimmi.edu';""")
+    print_table(table=cur.fetchall())
+    del_full_name_column()
 
 
 def new_applicant():
