@@ -1,5 +1,6 @@
 import psycopg2
 import sys
+import os
 
 
 try:
@@ -41,18 +42,25 @@ def handle_menu():
     while not option:
         option = input('Select an option: ')
     if option == "1":
+        os.system('clear')
         name_of_mentors()
     elif option == "2":
+        os.system('clear')
         nick_of_mentors_in_miskolc()
     elif option == "3":
+        os.system('clear')
         carols_hat()
     elif option == "4":
+        os.system('clear')
         not_carol()
     elif option == "5":
+        os.system('clear')
         new_applicant()
     elif option == "6":
+        os.system('clear')
         jeminas_new_number()
     elif option == "7":
+        os.system('clear')
         cancel_application()
     elif option == "0":
         sys.exit(0)
@@ -92,7 +100,12 @@ def not_carol():
 
 
 def new_applicant():
-    pass
+    cur.execute("""INSERT INTO applicants (first_name, last_name, phone_number, email, application_code)
+                 VALUES ('Markus', 'Schaffarzyk', '003620/725-2666', 'djnovus@groovecoverage.com', '54823');""")
+    cur.execute("""SELECT id, first_name, last_name, phone_number, email, application_code
+                FROM applicants WHERE application_code = 54823;""")
+    print_table(table=cur.fetchall())
+    cur.execute("""DELETE FROM applicants WHERE id = 54823;""")
 
 
 def jeminas_new_number():
@@ -104,6 +117,7 @@ def cancel_application():
 
 
 def main():
+    os.system('clear')
     while True:
         main_menu()
         handle_menu()
