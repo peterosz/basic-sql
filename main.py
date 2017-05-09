@@ -110,10 +110,9 @@ def not_carol():
 def new_applicant():
     cur.execute("""INSERT INTO applicants (first_name, last_name, phone_number, email, application_code)
                  VALUES ('Markus', 'Schaffarzyk', '003620/725-2666', 'djnovus@groovecoverage.com', '54823');""")
-    cur.execute("""SELECT id, first_name, last_name, phone_number, email, application_code
-                FROM applicants WHERE application_code = 54823;""")
+    cur.execute("""SELECT * FROM applicants WHERE application_code = 54823;""")
     print_table(table=cur.fetchall())
-    cur.execute("""DELETE FROM applicants WHERE id = '54823';""")
+    cur.execute("""DELETE FROM applicants WHERE application_code = 54823;""")
 
 
 def jeminas_new_number():
