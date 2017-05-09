@@ -31,10 +31,12 @@ def main_menu():
                  'The correct Carol',
                  'New Applicant',
                  'Jemima has a new number',
-                 'Cancel application request']
+                 'Cancel application request',
+                 'See Mentors Table',
+                 'See Applicants Table']
     for index, option in enumerate(menu_list):
         print("({0}) {1}".format(index + 1, option))
-    print("(0) {0}".format('exit'))
+    print("(0) {0}".format('Exit'))
 
 
 def handle_menu():
@@ -62,6 +64,12 @@ def handle_menu():
     elif option == "7":
         os.system('clear')
         cancel_application()
+    elif option == "8":
+        os.system('clear')
+        see_mentors_table()
+    elif option == "9":
+        os.system('clear')
+        see_applicants_table()
     elif option == "0":
         sys.exit(0)
 
@@ -118,7 +126,16 @@ def jeminas_new_number():
 
 def cancel_application():
     cur.execute("""DELETE FROM applicants WHERE email LIKE '%mauriseu.net';""")
-    cur.execute("""SELECT first_name, last_name, email FROM applicants;""")
+
+
+def see_mentors_table():
+    cur.execute("""SELECT id, first_name, last_name, nick_name, phone_number,
+                email, city, favourite_number FROM mentors;""")
+    print_table(table=cur.fetchall())
+
+
+def see_applicants_table():
+    cur.execute("""SELECT id, first_name, last_name, phone_number, email, application_code FROM applicants;""")
     print_table(table=cur.fetchall())
 
 
