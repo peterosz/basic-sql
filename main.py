@@ -25,7 +25,7 @@ def print_table(table):
 
 def main_menu():
     menu_list = ['Name of Mentors',
-                 'Nick names mentors working at Miskolc',
+                 'Nick names of mentors working at Miskolc',
                  'Carol who lost a hat',
                  'The correct Carol',
                  'New Applicant',
@@ -59,19 +59,29 @@ def handle_menu():
 
 
 def name_of_mentors():
-    cur.execute("""SELECT first_name, last_name from mentors""")
-    table = cur.fetchall()
-    print_table(table)
+    cur.execute("""SELECT first_name, last_name from mentors;""")
+    print_table(table=cur.fetchall())
 
 
 def nick_of_mentors_in_miskolc():
-    cur.execute("""SELECT nick_name from mentors where city='Miskolc'""")
-    table = cur.fetchall()
-    print_table(table)
+    cur.execute("""SELECT nick_name from mentors where city='Miskolc';""")
+    print_table(table=cur.fetchall())
+
+
+def add_full_name_column():
+    cur.execute("""ALTER TABLE applicants ADD COLUMN full_name VARCHAR(50);""")
+    cur.execute("""UPDATE applicants SET full_name = CONCAT(first_name, ' ', last_name);""")
+
+
+def del_full_name_column():
+    cur.execute("""ALTER TABLE applicants DROP COLUMN full_name;""")
 
 
 def carols_hat():
-    pass
+    add_full_name_column()
+    cur.execute("""SELECT full_name, phone_number FROM applicants where first_name = 'Carol';""")
+    print_table(table=cur.fetchall())
+    del_full_name_column()
 
 
 def correct_carol():
