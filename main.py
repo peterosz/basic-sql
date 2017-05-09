@@ -129,7 +129,7 @@ def cancel_application():
 
 
 def see_mentors_table():
-    cur.execute("""SELECT * FROM mentors;""")
+    cur.execute("""SELECT * FROM mentors ORDER BY id;""")
     print_table(table=cur.fetchall())
 
 
