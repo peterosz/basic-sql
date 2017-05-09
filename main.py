@@ -16,6 +16,7 @@ def print_table(table):
     border_cross = '╋'
     columns = [list(x) for x in zip(*table)]
     lengths = [max(map(len, map(str, col))) for col in columns]
+    table = [map(str, row) for row in table]
     rows = border_vertical + border_vertical.join(' {:^%d} ' % length for length in lengths) + border_vertical
     crosses = border_cross + border_cross.join(border_horizontal * (lenght+2) for lenght in lengths) + border_cross
     print(crosses)
@@ -128,8 +129,7 @@ def cancel_application():
 
 
 def see_mentors_table():
-    cur.execute("""SELECT id, first_name, last_name, nick_name, phone_number,
-                email, city FROM mentors;""")
+    cur.execute("""SELECT * FROM mentors;""")
     print_table(table=cur.fetchall())
 
 
