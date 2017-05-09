@@ -113,7 +113,7 @@ def new_applicant():
     cur.execute("""SELECT id, first_name, last_name, phone_number, email, application_code
                 FROM applicants WHERE application_code = 54823;""")
     print_table(table=cur.fetchall())
-    cur.execute("""DELETE FROM applicants WHERE id = 54823;""")
+    cur.execute("""DELETE FROM applicants WHERE id = '54823';""")
 
 
 def jeminas_new_number():
@@ -130,12 +130,12 @@ def cancel_application():
 
 def see_mentors_table():
     cur.execute("""SELECT id, first_name, last_name, nick_name, phone_number,
-                email, city, favourite_number FROM mentors;""")
+                email, city FROM mentors;""")
     print_table(table=cur.fetchall())
 
 
 def see_applicants_table():
-    cur.execute("""SELECT id, first_name, last_name, phone_number, email, application_code FROM applicants;""")
+    cur.execute("""SELECT * FROM applicants;""")
     print_table(table=cur.fetchall())
 
 
