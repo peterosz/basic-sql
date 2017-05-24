@@ -1,4 +1,8 @@
 from flask import Flask, render_template
+import data_manager
+
+
+app = Flask(__name__)
 
 
 @app.route('/')
