@@ -28,7 +28,7 @@ def connect_to_database(func_to_be_connected):
 
 @connect_to_database
 def mentors():
-    query = ('''SELECT first_name, last_name, name, country
+    query = ('''SELECT mentors.first_name, mentors.last_name, schools.name, schools.country
                 FROM mentors
                 INNER JOIN schools ON mentors.city = schools.city
                 ORDER BY mentors.id asc''')
@@ -38,8 +38,19 @@ def mentors():
 
 
 @connect_to_database
+def all_school():
+    query = ('''SELECT mentors.first_name, mentors.last_name, schools.name, schools.country
+                FROM mentors
+                RIGHT JOIN schools ON mentors.city = schools.city
+                ORDER BY mentors.id''')
+    _cursor.execute(query)
+    table = _cursor.fetchall()
+    return render_template('layout.html', table=table)
+
+
+@connect_to_database
 def mentors_by_country():
-    query = ('''SELECT country, COUNT(mentors.id) AS count
+    query = ('''SELECT schools.country, COUNT(mentors.id) AS count
                 FROM schools
                 INNER JOIN mentors ON schools.city = mentors.city
                 GROUP BY schools.country
