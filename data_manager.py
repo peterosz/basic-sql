@@ -50,7 +50,7 @@ def all_school():
 
 @connect_to_database
 def mentors_by_country():
-    query = ('''SELECT schools.country, COUNT(mentors.id) AS count
+    query = ('''SELECT schools.country, COUNT(mentors.id)
                 FROM schools
                 INNER JOIN mentors ON schools.city = mentors.city
                 GROUP BY schools.country
@@ -58,3 +58,16 @@ def mentors_by_country():
     _cursor.execute(query)
     table = _cursor.fetchall()
     return render_template('layout.html', table=table)
+
+
+@connect_to_database
+def contacts():
+    query = ('''SELECT schools.name, CONCAT(mentors.first_name, ' ', mentors.last_name)
+                FROM schools
+                INNER JOIN mentors ON mentors.id = schools.contact_person
+                GROUP BY schools.name, mentors.first_name, mentors.last_name
+                ORDER BY schools.name desc;''')
+    _cursor.execute(query)
+    table = _cursor.fetchall()
+    return render_template('layout.html', table=table)
+
