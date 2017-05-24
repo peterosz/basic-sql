@@ -10,6 +10,11 @@ def index_page():
     return render_template('index.html')
 
 
+@app.route('/mentors')
+def show_mentors():
+    return data_manager.mentors()
+
+
 @app.route('/all-school')
 def show_all_school():
     return data_manager.all_school()

@@ -1,12 +1,13 @@
+import os
 import psycopg2
-from flask import Flask
+from flask import Flask, render_template
 
 
 def connect_to_database(func_to_be_connected):
     def connection(*args, **kwargs):
-        global cur
-        cur = None
+        global _cursor
         _db_connection = None
+        _cursor = None
         connection_data = {
             'dbname': os.environ.get('MY_PSQL_DBNAME'),
             'user': os.environ.get('MY_PSQL_USER'),
@@ -23,3 +24,26 @@ def connect_to_database(func_to_be_connected):
         _db_connection.close()
         return result
     return connection
+
+
+@connect_to_database
+def mentors():
+    query = ('''SELECT first_name, last_name, name, country
+                FROM mentors
+                INNER JOIN schools ON mentors.city = schools.city
+                ORDER BY mentors.id asc''')
+    _cursor.execute(query)
+    table = _cursor.fetchall()
+    return render_template('layout.html', table=table)
+
+
+@connect_to_database
+def mentors_by_country():
+    query = ('''SELECT country, COUNT(mentors.id) AS count
+                FROM schools
+                INNER JOIN mentors ON schools.city = mentors.city
+                GROUP BY schools.country
+                ORDER BY schools.country desc;''')
+    _cursor.execute(query)
+    table = _cursor.fetchall()
+    return render_template('layout.html', table=table)
