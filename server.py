@@ -1,25 +1,6 @@
-import psycopg2
-from flask import Flask
+from flask import Flask, render_template
 
 
-def connect_to_database(func_to_be_connected):
-    def connection(*args, **kwargs):
-        global cur
-        cur = None
-        _db_connection = None
-        connection_data = {
-            'dbname': os.environ.get('MY_PSQL_DBNAME'),
-            'user': os.environ.get('MY_PSQL_USER'),
-            'host': os.environ.get('MY_PSQL_HOST'),
-            'password': os.environ.get('MY_PSQL_PASSWORD')
-        }
-        connect_string = "dbname='{dbname}' user='{user}' host='{host}' password='{password}'"
-        connect_string = connect_string.format(**connection_data)
-        _db_connection = psycopg2.connect(connect_string)
-        _db_connection.autocommit = True
-        _cursor = _db_connection.cursor()
-        result = func_to_be_connected(*args, **kwargs)
-        _cursor.close()
-        _db_connection.close()
-        return result
-    return connection
+@app.route('/')
+def index_page():
+    return render_template('index.html')
