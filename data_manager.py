@@ -71,3 +71,13 @@ def contacts():
     table = _cursor.fetchall()
     return render_template('layout.html', table=table)
 
+
+@connect_to_database
+def applicants():
+    query = ('''SELECT applicants.first_name, applicants.application_code, applicants_mentors.creation_date
+                FROM applicants
+                INNER JOIN applicants_mentors ON applicants.id = applicants_mentos.applicant_id
+                ORDER BY applicants_mentors.creation_date desc''')
+    _cursor.execute(query)
+    table = _cursor.fetchall()
+    return render_template('layout.html', table=table)
