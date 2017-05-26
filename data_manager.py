@@ -74,10 +74,19 @@ def contacts():
 
 @connect_to_database
 def applicants():
-    query = ('''SELECT applicants.first_name, applicants.application_code, applicants_mentors.creation_date
+    query = ('''SELECT first_name, application_code, creation_date
                 FROM applicants
-                INNER JOIN applicants_mentors ON applicants.id = applicants_mentos.applicant_id
+                LEFT JOIN applicants_mentors ON id = applicant_id
+                WHERE creation_date > '2016-01-01'
                 ORDER BY applicants_mentors.creation_date desc''')
     _cursor.execute(query)
     table = _cursor.fetchall()
     return render_template('layout.html', table=table)
+
+
+@connect_to_database
+def applicants_and_mentors():
+    query = ('''SELECT applicants.first_name, applicants.application_code, mentor_first_name, mentor_last_name
+                FROM applicants
+                INNER JOIN applicants_mentors on id = applicant_id
+                ''')
