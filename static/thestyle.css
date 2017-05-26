@@ -1,0 +1,41 @@
+body {
+    font-family: arial, helvetica, sans-serif;
+    font-size: 18px;
+    background-color: #E5E8ED;
+    background-image: url('brickwall.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0px auto;
+    width: 55%;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #A2A9AF;
+}
+tr:nth-child(even){background-color: #8A939D}
+tr:hover {
+          background-color: #FD9308;
+        }
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #FD9308;
+    color: black;
+    font-weight: bold;
+}
+a:link, a:visited {
+    background-color: #FD9308;
+    color: black;
+    padding: 15px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+a:hover, a:active {
+    background-color: #ffbd67;
+}

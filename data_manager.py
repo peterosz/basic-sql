@@ -28,24 +28,26 @@ def connect_to_database(func_to_be_connected):
 
 @connect_to_database
 def mentors():
-    query = ('''SELECT mentors.first_name, mentors.last_name, schools.name, schools.country
+    query = ('''SELECT CONCAT(mentors.first_name, ' ', mentors.last_name), schools.name, schools.country
                 FROM mentors
                 INNER JOIN schools ON mentors.city = schools.city
                 ORDER BY mentors.id asc''')
     _cursor.execute(query)
     table = _cursor.fetchall()
-    return render_template('layout.html', table=table)
+    table_header = ['Mentor', 'Shcools name', 'Country']
+    return render_template('layout.html', table=table, table_header=table_header)
 
 
 @connect_to_database
 def all_school():
-    query = ('''SELECT mentors.first_name, mentors.last_name, schools.name, schools.country
+    query = ('''SELECT CONCAT(COALESCE(mentors.first_name, 'None'), ' ', mentors.last_name), schools.name, schools.country
                 FROM mentors
                 RIGHT JOIN schools ON mentors.city = schools.city
                 ORDER BY mentors.id''')
     _cursor.execute(query)
     table = _cursor.fetchall()
-    return render_template('layout.html', table=table)
+    table_header = ['Mentor', 'Shcools name', 'Country']
+    return render_template('layout.html', table=table, table_header=table_header)
 
 
 @connect_to_database
@@ -57,7 +59,8 @@ def mentors_by_country():
                 ORDER BY schools.country desc;''')
     _cursor.execute(query)
     table = _cursor.fetchall()
-    return render_template('layout.html', table=table)
+    table_header = ['Country', 'Number of Schools']
+    return render_template('layout.html', table=table, table_header=table_header)
 
 
 @connect_to_database
@@ -69,7 +72,8 @@ def contacts():
                 ORDER BY schools.name desc;''')
     _cursor.execute(query)
     table = _cursor.fetchall()
-    return render_template('layout.html', table=table)
+    table_header = ['School', 'Contact Mentor']
+    return render_template('layout.html', table=table, table_header=table_header)
 
 
 @connect_to_database
@@ -81,12 +85,19 @@ def applicants():
                 ORDER BY applicants_mentors.creation_date desc''')
     _cursor.execute(query)
     table = _cursor.fetchall()
-    return render_template('layout.html', table=table)
+    table_header = ['Applicant', 'Applicants code', 'Time created']
+    return render_template('layout.html', table=table, table_header=table_header)
 
 
 @connect_to_database
 def applicants_and_mentors():
-    query = ('''SELECT applicants.first_name, applicants.application_code, mentor_first_name, mentor_last_name
+    query = ('''SELECT applicants.first_name, applicants.application_code,
+                CONCAT(COALESCE(mentors.first_name, 'None'), ' ', mentors.last_name)
                 FROM applicants
-                INNER JOIN applicants_mentors on id = applicant_id
-                ''')
+                LEFT JOIN applicants_mentors on id = applicant_id
+                LEFT JOIN mentors on mentors.id = mentor_id
+                ORDER BY applicant_id asc''')
+    _cursor.execute(query)
+    table = _cursor.fetchall()
+    table_header = ['Applicant', 'Applicants code', 'Applicants Mentor']
+    return render_template('layout.html', table=table, table_header=table_header)

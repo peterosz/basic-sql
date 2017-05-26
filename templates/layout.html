@@ -1,12 +1,26 @@
-<table>
-    {% for line in table %}
-        <tr>
-            {% for item in line %}
-                <td>{{ item }}</td>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Query result</title>
+        <link rel="stylesheet" type='text/css' href="/static/thestyle.css">
+    </head>
+    <body>
+        <table>
+            <tr>
+                {% for item in table_header %}
+                    <th>{{ item }}</th>
+                {% endfor %}
+            </tr>
+            {% for line in table %}
+                <tr>
+                    {% for item in line %}
+                        <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
             {% endfor %}
-        </tr>
-    {% endfor %}
-</table>
-<br>
-<a href='/'>Back</a>
+        </table>
+        <br>
+        <a href='/'>Back</a>
+    </body>
+</html>
                 
